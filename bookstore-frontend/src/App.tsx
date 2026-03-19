@@ -220,7 +220,6 @@ function AppInner() {
             <BookList
               initialState={bookListState}
               onStateChange={setBookListState}
-              onGoToCart={goToCart}
             />
           </>
         ) : (

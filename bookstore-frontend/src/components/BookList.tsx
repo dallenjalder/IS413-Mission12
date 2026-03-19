@@ -29,11 +29,10 @@ interface BooksResponse {
 interface BookListProps {
   initialState: BookListState;               // Restored state when coming back from cart
   onStateChange: (s: BookListState) => void; // Keeps parent in sync for "Continue Shopping"
-  onGoToCart: () => void;                    // Navigate to the full cart page
 }
 
 // BookList -- main browse page with category filter, sorting, pagination, and cart
-function BookList({ initialState, onStateChange, onGoToCart }: BookListProps) {
+function BookList({ initialState, onStateChange }: BookListProps) {
   // ---- View state (initialized from parent so "Continue Shopping" restores position) ----
   let [currentPage, setCurrentPage] = useState(initialState.currentPage);
   let [pageSize, setPageSize] = useState(initialState.pageSize);
