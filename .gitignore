@@ -1,0 +1,15 @@
+# .NET build output
+BooksAPI/bin/
+BooksAPI/obj/
+
+# Node / Vite
+bookstore-frontend/node_modules/
+bookstore-frontend/dist/
+
+# macOS
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+*.user
