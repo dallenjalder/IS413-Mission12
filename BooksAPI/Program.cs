@@ -14,9 +14,8 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(
                 "http://localhost:5173",   // Vite dev server
                 "http://localhost:4173",   // Vite preview
-                "http://localhost:3000"    // fallback dev port
-                // TODO: Add your Azure Static Web App URL here when deploying, e.g.:
-                // "https://your-app-name.azurestaticapps.net"
+                "http://localhost:3000",   // fallback dev port
+                "https://REPLACE_WITH_YOUR_SWA_URL.azurestaticapps.net" // Azure Static Web App -- update after creating SWA
               )
               .AllowAnyHeader()
               .AllowAnyMethod();
