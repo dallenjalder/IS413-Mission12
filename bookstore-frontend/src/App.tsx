@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { CartProvider, useCart } from "./context/CartContext";
 import BookList from "./components/BookList";
 import CartPage from "./components/CartPage";
@@ -25,9 +26,8 @@ const DEFAULT_STATE: BookListState = {
   selectedCategory: "",
 };
 
-// CartOffcanvas -- NEW Bootstrap feature #1: Offcanvas sliding cart drawer
+// CartOffcanvas -- Bootstrap Offcanvas sliding cart drawer
 // Slides in from the right when the cart button in the navbar is clicked.
-// Requires Bootstrap JS (loaded via CDN in index.html).
 function CartOffcanvas({ onViewFullCart }: { onViewFullCart: () => void }) {
   const { items, updateQuantity, removeFromCart, totalPrice, totalItems } =
     useCart();
@@ -138,7 +138,7 @@ function CartOffcanvas({ onViewFullCart }: { onViewFullCart: () => void }) {
   );
 }
 
-// NavBar -- cart button opens the Offcanvas drawer via Bootstrap data attributes
+// NavBar -- includes links to the store and admin page, plus the cart button
 function NavBar({
   view,
   onContinueShopping,
@@ -147,6 +147,7 @@ function NavBar({
   onContinueShopping: () => void;
 }) {
   const { totalItems } = useCart();
+  const location = useLocation();
 
   return (
     <nav className="navbar navbar-dark bg-dark">
@@ -154,32 +155,47 @@ function NavBar({
         {/* Brand */}
         <span className="navbar-brand fw-semibold">📚 Bookstore</span>
 
-        {/* On the cart page show "Continue Shopping"; on book list open the offcanvas */}
-        {view === "cart" ? (
-          <button
-            className="btn btn-outline-light btn-sm"
-            onClick={onContinueShopping}
+        {/* Nav links */}
+        <div className="d-flex align-items-center gap-3">
+          {/* Admin link -- highlighted when on admin page */}
+          <Link
+            to="/adminbooks"
+            className={`btn btn-sm ${
+              location.pathname === "/adminbooks"
+                ? "btn-light"
+                : "btn-outline-light"
+            }`}
           >
-            &larr; Continue Shopping
-          </button>
-        ) : (
-          // data-bs-toggle / data-bs-target open the Offcanvas without any JS call
-          <button
-            className="btn btn-outline-light btn-sm position-relative"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#cartDrawer"
-            aria-controls="cartDrawer"
-          >
-            🛒 Cart
-            {/* Item count badge on the navbar button */}
-            {totalItems > 0 && (
-              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                {totalItems}
-                <span className="visually-hidden">items in cart</span>
-              </span>
-            )}
-          </button>
-        )}
+            Admin
+          </Link>
+
+          {/* On the cart page show "Continue Shopping"; on book list open the offcanvas */}
+          {view === "cart" ? (
+            <button
+              className="btn btn-outline-light btn-sm"
+              onClick={onContinueShopping}
+            >
+              &larr; Continue Shopping
+            </button>
+          ) : (
+            // data-bs-toggle / data-bs-target open the Offcanvas without any JS call
+            <button
+              className="btn btn-outline-light btn-sm position-relative"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#cartDrawer"
+              aria-controls="cartDrawer"
+            >
+              🛒 Cart
+              {/* Item count badge on the navbar button */}
+              {totalItems > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {totalItems}
+                  <span className="visually-hidden">items in cart</span>
+                </span>
+              )}
+            </button>
+          )}
+        </div>
       </div>
     </nav>
   );

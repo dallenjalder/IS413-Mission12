@@ -62,7 +62,7 @@ function BookList({ initialState, onStateChange }: BookListProps) {
 
   // Fetch all distinct categories once on mount (for the filter sidebar)
   useEffect(() => {
-    fetch("http://localhost:5214/api/books/categories")
+    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5214"}/api/books/categories`)
       .then((res) => res.json() as Promise<string[]>)
       .then(setCategories)
       .catch(() => {}); // non-critical -- sidebar just won't populate
@@ -78,7 +78,7 @@ function BookList({ initialState, onStateChange }: BookListProps) {
       ...(selectedCategory ? { category: selectedCategory } : {}),
     });
 
-    fetch(`http://localhost:5214/api/books?${params}`)
+    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5214"}/api/books?${params}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch books");
         return res.json() as Promise<BooksResponse>;

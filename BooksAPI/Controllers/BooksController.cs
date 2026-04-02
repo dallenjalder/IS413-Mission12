@@ -66,5 +66,62 @@ namespace BooksAPI.Controllers
 
             return Ok(categories);
         }
+
+        // POST: api/books
+        // Adds a new book to the database
+        [HttpPost]
+        public async Task<ActionResult<Book>> AddBook([FromBody] Book book)
+        {
+            _context.Books.Add(book);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetBooks), new { id = book.BookID }, book);
+        }
+
+        // PUT: api/books/{id}
+        // Updates an existing book in the database
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateBook(int id, [FromBody] Book book)
+        {
+            if (id != book.BookID)
+            {
+                return BadRequest("Book ID in URL does not match the book object.");
+            }
+
+            _context.Entry(book).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await _context.Books.AnyAsync(b => b.BookID == id))
+                {
+                    return NotFound();
+                }
+                throw;
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/books/{id}
+        // Removes a book from the database
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteBook(int id)
+        {
+            var book = await _context.Books.FindAsync(id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }

@@ -3,12 +3,21 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Allow the React frontend (Vite default ports) to call the API
+// CORS policy -- allows the React frontend to call the API.
+// For local development, any localhost origin is allowed.
+// IMPORTANT: When deploying to Azure, add your Azure Static Web App URL below
+// (without a trailing slash!) so the deployed frontend can reach the API.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+        policy.WithOrigins(
+                "http://localhost:5173",   // Vite dev server
+                "http://localhost:4173",   // Vite preview
+                "http://localhost:3000"    // fallback dev port
+                // TODO: Add your Azure Static Web App URL here when deploying, e.g.:
+                // "https://your-app-name.azurestaticapps.net"
+              )
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
