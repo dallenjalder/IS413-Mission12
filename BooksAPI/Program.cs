@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
                 "http://localhost:5173",   // Vite dev server
                 "http://localhost:4173",   // Vite preview
                 "http://localhost:3000",   // fallback dev port
-                "https://REPLACE_WITH_YOUR_SWA_URL.azurestaticapps.net" // Azure Static Web App -- update after creating SWA
+                "https://zealous-grass-0878a400f.4.azurestaticapps.net" // Azure Static Web App
               )
               .AllowAnyHeader()
               .AllowAnyMethod();
